@@ -1,4 +1,4 @@
-import { registerCommand } from "@vendetta/commands"
+import { registerCommand } from "@vendetta/commands";
 import { toasts } = from "@vendetta/metro/common"
 
 
