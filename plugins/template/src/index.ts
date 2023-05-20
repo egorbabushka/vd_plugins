@@ -26,7 +26,7 @@ const ask = async (args, ctx) => {
 
 export default {
     onLoad: () => {
-        toasts.open({content: "hello, tehello
+        toasts.open({content: "hello, world"})
         const u = registerCommand({
             name: "Ask_ChatGPT", 
             displayName: "Ask ChatGPT",
