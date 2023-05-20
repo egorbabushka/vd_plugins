@@ -1,5 +1,5 @@
-import { registerCommand } from "@vendetta/commands";
-import { toasts } = from "@vendetta/metro/common"
+import { registerCommand } from "@vendetta/commands"
+import { toasts } from "@vendetta/metro/common"
 
 
 const ask = async (args, ctx) => {
