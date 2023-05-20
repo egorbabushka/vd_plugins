@@ -1,5 +1,6 @@
 import { registerCommand } from "@vendetta/commands"
 import { toasts } from "@vendetta/metro/common"
+import Settings from "./Settings"
 
 
 const ask = async (args, ctx) => {
@@ -50,4 +51,5 @@ export default {
         toasts.open({content: "goodbye, test"})
         u()
     },
+    settings: Settings,
 }
