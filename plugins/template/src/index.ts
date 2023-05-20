@@ -50,5 +50,4 @@ export default {
         toasts.open({content: "goodbye, test"})
         u()
     },
-    settings: Settings,
 }
