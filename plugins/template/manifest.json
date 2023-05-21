@@ -1,10 +1,10 @@
 {
-    "name": "Template Plugin",
-    "description": "A plugin for use as a template.",
+    "name": "ChatGPT plugin",
+    "description": "Don't know the answer to any question? Ask him at ChatGPT with command /Ask ChatGPT!",
     "authors": [
         {
-            "name": "You!",
-            "id": "YOUR_ID_HERE"
+            "name": "Егор Бабушка",
+            "id": "715142362908590142"
         }
     ],
     "main": "src/index.ts",
