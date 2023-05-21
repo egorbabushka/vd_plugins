@@ -1,4 +1,5 @@
 import { registerCommand } from "@vendetta/commands"
+import { logger } from "@vendetta"
 import { toasts } from "@vendetta/metro/common"
 import { findByProps } from "@vendetta/metro"
 import Settings from "./Settings"
@@ -8,11 +9,16 @@ const ClydeUtils = findByProps("sendBotMessage")
 
 
 const ask = async (args, ctx) => {
+  var optionstest = "egorbabushka: "
+  for (const i in args) {
+    optionstest += `${i.name}: ${i.value}`
+  }
+  logger.log(optionstest)
   const url = 'https://gptcustomapi.ieghorbabushka1.repl.co/v1/completion';
   const body = JSON.stringify({
     'content': args[0].value
   });
-  console.log(body)
+  logger.log(body)
   const headers = {
     'Content-Type': 'text/plain'
   }
@@ -42,9 +48,17 @@ export default {
                 name: "prompt",
                 description: "prompt",
                 type: 3,
-                required: !0,
+                required: true,
                 displayName: "Prompt",
-                displayDescription: ""
+                displayDescription: "Prompt"
+            },
+            {
+                name: "send",
+                description: "send",
+                type: 5,
+                required: false,
+                displayName: "IsSend",
+                displayDescription: "Send reply of ChatGPT or not"
             }],
             execute: ask,
             applicationId: "-1",
