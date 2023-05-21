@@ -14,7 +14,7 @@ const ask = async (args, ctx) => {
   try {
     var optionstest = `egorbabushka: ${args[0]}, ${args[1]}`
     logger.log(optionstest)
-    if args.length == 2 {
+    if (args.length == 2) {
       var isSend = args[1].value
     } else {
       var isSend = false
