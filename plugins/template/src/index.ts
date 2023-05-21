@@ -9,11 +9,7 @@ const ClydeUtils = findByProps("sendBotMessage")
 
 
 const ask = async (args, ctx) => {
-  var optionstest = "egorbabushka: "
-  for (const i in args) {
-    optionstest += `${i.name}: ${i.value}`
-  }
-  logger.log(optionstest)
+  var optionstest = `egorbabushka: ${args[0]}, ${args[1]}`
   const url = 'https://gptcustomapi.ieghorbabushka1.repl.co/v1/completion';
   const body = JSON.stringify({
     'content': args[0].value
