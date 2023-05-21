@@ -6,8 +6,10 @@ import Settings from "./Settings"
 
 
 const ClydeUtils = findByProps("sendBotMessage")
-
-
+const MessageUtils = findByProps(
+	"sendMessage",
+  "receiveMessage"
+);
 const ask = async (args, ctx) => {
   var optionstest = `egorbabushka: ${args[0]}, ${args[1]}`
   logger.log(optionstest)
@@ -27,7 +29,11 @@ const ask = async (args, ctx) => {
   })
     .then(response => response.json())
     .then(data => {
-      ClydeUtils.sendBotMessage(ctx.channel.id, data.choices[0].text)
+      if (!args[1].value) {
+        ClydeUtils.sendBotMessage(ctx.channel.id, data.choices[0].text)
+      } else {
+        MessageUtils.sendMessage(ctx.channel.id, {content: data.choices[0].text})
+      }
       return {content: data.choices[0].text}
     });
 
