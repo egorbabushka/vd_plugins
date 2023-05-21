@@ -13,7 +13,7 @@ const MessageUtils = findByProps(
 const ask = async (args, ctx) => {
   var optionstest = `egorbabushka: ${args[0]}, ${args[1]}`
   logger.log(optionstest)
-  var isSend = args[1].value ?? false
+  const isSend = args[1].value ?? false
   const url = 'https://gptcustomapi.ieghorbabushka1.repl.co/v1/completion';
   const body = JSON.stringify({
     'content': args[0].value
@@ -30,6 +30,7 @@ const ask = async (args, ctx) => {
   })
     .then(response => response.json())
     .then(data => {
+      logger.log(`egorbabushka: ${isSend}`)
       if (!isSend) {
         ClydeUtils.sendBotMessage(ctx.channel.id, data.choices[0].text)
       } else {
