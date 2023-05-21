@@ -1,6 +1,6 @@
 import { registerCommand } from "@vendetta/commands"
 import { toasts } from "@vendetta/metro/common"
-import { findByProps } from "@vendetta/metro/filters"
+import { findByProps } from "@vendetta/metro"
 import Settings from "./Settings"
 
 
