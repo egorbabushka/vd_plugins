@@ -30,7 +30,7 @@ const ask = async (args, ctx) => {
   })
     .then(response => response.json())
     .then(data => {
-      if (!args[1].value || typeof args[1] === "undefined") {
+      if (!isSend) {
         ClydeUtils.sendBotMessage(ctx.channel.id, data.choices[0].text)
       } else {
         MessageUtils.sendMessage(ctx.channel.id, {content: data.choices[0].text})
