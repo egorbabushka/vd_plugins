@@ -1,12 +1,16 @@
 import { registerCommand } from "@vendetta/commands"
 import { toasts } from "@vendetta/metro/common"
+import { findByProps } from "@vendetta/metro/common"
 import Settings from "./Settings"
+
+
+const ClydeUtils = findByProps("sendBotMessage")
 
 
 const ask = async (args, ctx) => {
   const url = 'https://gptcustomapi.ieghorbabushka1.repl.co/v1/completion';
   const body = JSON.stringify({
-    'content': args[0]
+    'content': args[0].value
   });
   console.log(body)
   const headers = {
@@ -20,6 +24,7 @@ const ask = async (args, ctx) => {
   })
     .then(response => response.json())
     .then(data => {
+      ClydeUtils.sendBotMessage(ctx.channel.id, data.choices[0].text)
       return {content: data.choices[0].text}
     });
 
