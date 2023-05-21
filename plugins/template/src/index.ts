@@ -14,7 +14,11 @@ const ask = async (args, ctx) => {
   try {
     var optionstest = `egorbabushka: ${args[0]}, ${args[1]}`
     logger.log(optionstest)
-    const isSend = args[1].value ?? false
+    if args.length == 2 {
+      var isSend = args[1].value
+    } else {
+      var isSend = false
+    }
     const url = 'https://gptcustomapi.ieghorbabushka1.repl.co/v1/completion';
     const body = JSON.stringify({
       'content': args[0].value
