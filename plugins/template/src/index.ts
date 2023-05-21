@@ -4,7 +4,7 @@ import { toasts } from "@vendetta/metro/common"
 import { findByProps } from "@vendetta/metro"
 import Settings from "./Settings"
 
-
+var unregister;
 const ClydeUtils = findByProps("sendBotMessage")
 const MessageUtils = findByProps(
 	"sendMessage",
@@ -42,7 +42,7 @@ const ask = async (args, ctx) => {
 export default {
     onLoad: () => {
         toasts.open({content: "hello, world"})
-        const u = registerCommand({
+        unregister = registerCommand({
             name: "Ask_ChatGPT", 
             displayName: "Ask ChatGPT",
             displayDescription: "ask chatgpt",
@@ -71,7 +71,7 @@ export default {
     },
     onUnload: () => {
         toasts.open({content: "goodbye, test"})
-        u()
+        unregister()
     },
     settings: Settings,
 }
