@@ -9,6 +9,6 @@
     ],
     "main": "src/index.ts",
     "vendetta": {
-        "icon": "ic_help"
+        "icon": "ic_help_24px"
     }
 }
