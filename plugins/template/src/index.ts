@@ -39,7 +39,7 @@ const ask = async (args, ctx) => {
         }
         return {content: data.choices[0].text}
       });
-  } catch e {
+  } catch (e: any) {
     logger.error(e)
   }
 }
