@@ -51,7 +51,7 @@ const ask = async (args, ctx) => {
 
 export default {
     onLoad: () => {
-        unpatchs.push(before("sendMessage", MessageUtils (args) => {
+        unpatchs.push(before("sendMessage", MessageUtils, (args) => {
             content = "# " + args[1].content
             args[1].content = content
         }))
