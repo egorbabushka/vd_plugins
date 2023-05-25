@@ -53,8 +53,8 @@ const ask = async (args, ctx) => {
 const patchMessages = () => {
   return before("sendMessage", MessageUtils, (args) => {
       try {
-      content = "# " + (args[1].content as string)
-      args[1].content = content
+        let content = "# " + (args[1].content as string)
+        args[1].content = content
       } catch (e: any) {
         logger.error(e)
       }
