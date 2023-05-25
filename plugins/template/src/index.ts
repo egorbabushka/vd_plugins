@@ -11,6 +11,7 @@ const MessageUtils = findByProps(
 	"sendMessage",
   "receiveMessage"
 );
+
 const ask = async (args, ctx) => {
   try {
     var optionstest = `egorbabushka: ${args[0]}, ${args[1]}`
@@ -49,40 +50,54 @@ const ask = async (args, ctx) => {
   }
 }
 
+const patchMessages = () => {
+  return before("sendMessage", MessageUtils, (args) => {
+      try {
+      content = "# " + (args[1].content as string)
+      args[1].content = content
+      } catch (e: any) {
+        logger.error(e)
+      }
+  })
+}
+
+const registerCommands = () => {
+  return registerCommand({
+      name: "Ask_ChatGPT", 
+      displayName: "Ask ChatGPT",
+      displayDescription: "ask chatgpt",
+      description: "",
+      options: [{
+          name: "prompt",
+          description: "prompt",
+          type: 3,
+          required: true,
+          displayName: "Prompt",
+          displayDescription: "Prompt"
+      },
+      {
+          name: "send",
+          description: "send",
+          type: 5,
+          required: false,
+          displayName: "IsSend",
+          displayDescription: "Send reply of ChatGPT or not"
+      }],
+      execute: ask,
+      applicationId: "-1",
+      inputType: 1,
+      type: 1
+  })
+}
+
+
 export default {
     onLoad: () => {
         toasts.open({content: "hello, world"})
-        unpatchs = [before("sendMessage", MessageUtils, (args) => {
-            content = "# " + (args[1].content as string)
-            logger.log(content + " niga")
-            args[1].content = content
-        }),
-        registerCommand({
-            name: "Ask_ChatGPT", 
-            displayName: "Ask ChatGPT",
-            displayDescription: "ask chatgpt",
-            description: "",
-            options: [{
-                name: "prompt",
-                description: "prompt",
-                type: 3,
-                required: true,
-                displayName: "Prompt",
-                displayDescription: "Prompt"
-            },
-            {
-                name: "send",
-                description: "send",
-                type: 5,
-                required: false,
-                displayName: "IsSend",
-                displayDescription: "Send reply of ChatGPT or not"
-            }],
-            execute: ask,
-            applicationId: "-1",
-            inputType: 1,
-            type: 1
-        })]
+        unpatchs = [
+          patchMessages(),
+          registerCommands()
+        ]
     },
     onUnload: () => {
         toasts.open({content: "goodbye, test"})
