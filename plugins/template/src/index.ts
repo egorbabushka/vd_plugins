@@ -51,13 +51,13 @@ const ask = async (args, ctx) => {
 
 export default {
     onLoad: () => {
-        unpatchs.push(before("sendMessage", MessageUtils, (args) => {
+        toasts.open({content: "hello, world"})
+        unpatchs = [before("sendMessage", MessageUtils, (args) => {
             content = "# " + (args[1].content as string)
             logger.log(content + " niga")
             args[1].content = content
-        }))
-        toasts.open({content: "hello, world"})
-        unpatchs.push(registerCommand({
+        }),
+        registerCommand({
             name: "Ask_ChatGPT", 
             displayName: "Ask ChatGPT",
             displayDescription: "ask chatgpt",
@@ -82,7 +82,7 @@ export default {
             applicationId: "-1",
             inputType: 1,
             type: 1
-        }))
+        })]
     },
     onUnload: () => {
         toasts.open({content: "goodbye, test"})
