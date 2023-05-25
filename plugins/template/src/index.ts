@@ -53,7 +53,7 @@ export default {
     onLoad: () => {
         unpatchs.push(before("sendMessage", MessageUtils, (args) => {
             content = "# " + (args[1].content as string)
-            logger.log(content, "plugintest")
+            logger.log(content + "niga")
             args[1].content = content
         }))
         toasts.open({content: "hello, world"})
