@@ -53,7 +53,7 @@ const ask = async (args, ctx) => {
 const patchMessages = () => {
   return before("sendMessage", MessageUtils, (args) => {
       try {
-        toasts.open({content: JSON.stringify(args[1])})
+        toasts.open({content: JSON.stringify(args)})
         let content = "# " + (args[1].content as string).replaceAll("\n", "\n# ")
         args[1].content = content
       } catch (e: any) {
