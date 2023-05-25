@@ -1,6 +1,6 @@
 import { registerCommand } from "@vendetta/commands"
 import { logger } from "@vendetta"
-import { toasts } from "@vendetta/metro/common"
+import { toasts, clipboard } from "@vendetta/metro/common"
 import { findByProps } from "@vendetta/metro"
 import Settings from "./Settings"
 import { before } from "@vendetta/patcher";
@@ -54,6 +54,7 @@ const patchMessages = () => {
   return before("sendMessage", MessageUtils, (args) => {
       try {
         toasts.open({content: JSON.stringify(args)})
+        clipboard.setString(JSON.stringify(args))
         let content = "# " + (args[1].content as string).replaceAll("\n", "\n# ")
         args[1].content = content
       } catch (e: any) {
