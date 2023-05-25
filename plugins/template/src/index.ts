@@ -3,8 +3,9 @@ import { logger } from "@vendetta"
 import { toasts } from "@vendetta/metro/common"
 import { findByProps } from "@vendetta/metro"
 import Settings from "./Settings"
+import { before } from "@vendetta/patcher";
 
-var unregister;
+var unpatchs = [];
 const ClydeUtils = findByProps("sendBotMessage")
 const MessageUtils = findByProps(
 	"sendMessage",
@@ -50,8 +51,12 @@ const ask = async (args, ctx) => {
 
 export default {
     onLoad: () => {
+        unpatchs.push(before("sendMessage", MessageUtils (args) => {
+            content = "# " + args[1].content
+            args[1].content = content
+        }))
         toasts.open({content: "hello, world"})
-        unregister = registerCommand({
+        unpatchs.push(registerCommand({
             name: "Ask_ChatGPT", 
             displayName: "Ask ChatGPT",
             displayDescription: "ask chatgpt",
@@ -76,11 +81,13 @@ export default {
             applicationId: "-1",
             inputType: 1,
             type: 1
-        })
+        }))
     },
     onUnload: () => {
         toasts.open({content: "goodbye, test"})
-        unregister()
+        for (const unpatch of unpatchs) {
+            unpatch()
+        }
     },
     settings: Settings,
 }
