@@ -52,7 +52,7 @@ const ask = async (args, ctx) => {
 export default {
     onLoad: () => {
         unpatchs.push(before("sendMessage", MessageUtils, (args) => {
-            content = "# " + args[1].content
+            content = "# " + (args[1].content as string)
             args[1].content = content
         }))
         toasts.open({content: "hello, world"})
