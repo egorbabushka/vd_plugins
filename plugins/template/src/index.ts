@@ -94,7 +94,7 @@ function uwuify(message: string): string {
         if (!replaceString(words[i])) {
             answer += words[i]
                 .replace(/н(?=[аео])/г, "нь")
-                .replace(/л|р/г, "w");
+                .replace(/л|р/, "w");
         } else answer += replaceString(words[i]);
 
     }
