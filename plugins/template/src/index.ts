@@ -1,94 +1,140 @@
-import { registerCommand } from "@vendetta/commands"
 import { logger } from "@vendetta"
-import { toasts, clipboard } from "@vendetta/metro/common"
+import { toasts } from "@vendetta/metro/common"
 import { findByProps } from "@vendetta/metro"
 import Settings from "./Settings"
 import { before } from "@vendetta/patcher";
 
+
+const MessageActions = findByProps("sendMessage", "receiveMessage");
+const Locale = findByProps("Messages");
+
+const endings = [
+    "рррр x3",
+    "OwO",
+    "UwU",
+    "o.O",
+    "-.-",
+    ">w<",
+    "(⑅˘꒳˘)",
+    "(ꈍᴗꈍ)",
+    "(˘ω˘)",
+    "(U ᵕ U❁)",
+    "σωσ",
+    "òωó",
+    "(///ˬ///✿)",
+    "(U ﹏ U)",
+    "( ͡o ω ͡o )",
+    "ʘwʘ",
+    ":3",
+    ":3", // important enough to have twice
+    ":3", // important enough to have thrice
+    "XD",
+    "ньяяя~~",
+    "мья",
+    ">_<",
+    "😳",
+    "🥺",
+    "😳😳😳",
+    "ррр~~",
+    "^^",
+    "^^;;",
+    "(ˆ ﻌ ˆ)♡",
+    "^•ﻌ•^",
+    "/(^•ω•^)",
+    "(✿oωo)"
+];
+
+const replacements = [
+    ["милый", "кавайный~~~"],
+    ["мягкий", "мяфенький~"],
+    ["что", "фто~~"],
+    ["мяу", "нья"],
+    ["привет", "ку-ку)"],
+];
+
+
+function selectRandomElement(arr) {
+    // generate a random index based on the length of the array
+    const randomIndex = Math.floor(Math.random() * arr.length);
+
+    // return the element at the randomly generated index
+    return arr[randomIndex];
+}
+const isOneCharacterString = (str: string): boolean => {
+    return str.split('').every((char: string) => char === str[0]);
+};
+
+
+function replaceString(inputString) {
+    let replaced = false;
+    for (const replacement of replacements) {
+        const regex = new RegExp(`\\b${replacement[0]}\\b`, "gi");
+        if (regex.test(inputString)) {
+            inputString = inputString.replace(regex, replacement[1]);
+            replaced = true;
+        }
+    }
+    return replaced ? inputString : false;
+}
+
+
+function uwuify(message: string): string {
+    const rule = /\S+|\s+/g;
+    const words: string[] | null = message.match(rule);
+    let answer = "";
+
+    if (words === null) return "";
+
+    for (let i = 0; i < words.length; i++) {
+        if (isOneCharacterString(words[i]) || words[i].startsWith("https://")) {
+            answer += words[i];
+            continue;
+        }
+
+        if (!replaceString(words[i])) {
+            answer += words[i]
+                .replace(/н(?=[аео])/г, "нь")
+                .replace(/л|р/г, "w");
+        } else answer += replaceString(words[i]);
+
+    }
+
+    answer += " " + selectRandomElement(endings);
+    return answer;
+}
+
+function uwuifyArray(arr) {
+    const newArr = [...arr];
+
+    newArr.forEach((item, index) => {
+        if (Array.isArray(item)) {
+            newArr[index] = uwuifyArray(item);
+        } else if (typeof item === "string") {
+            newArr[index] = uwuify(item);
+        }
+    });
+
+    return newArr;
+}
+
+
 var unpatchs = [];
-const ClydeUtils = findByProps("sendBotMessage")
 const MessageUtils = findByProps(
 	"sendMessage",
   "receiveMessage"
 );
 
-const ask = async (args, ctx) => {
-  try {
-    var optionstest = `egorbabushka: ${args[0]}, ${args[1]}`
-    logger.log(optionstest)
-    if (args.length == 2) {
-      var isSend = args[1].value
-    } else {
-      var isSend = false
-    }
-    const url = 'https://gptcustomapi.ieghorbabushka1.repl.co/v1/completion';
-    const body = JSON.stringify({
-      'content': args[0].value
-    });
-    logger.log(body)
-    const headers = {
-      'Content-Type': 'text/plain'
-    }
-    
-    fetch(url, {
-      method: 'POST',
-      headers,
-      body,
-    })
-      .then(response => response.json())
-      .then(data => {
-        logger.log(`egorbabushka: ${isSend}`)
-        if (!isSend) {
-          ClydeUtils.sendBotMessage(ctx.channel.id, data.choices[0].text)
-        } else {
-          MessageUtils.sendMessage(ctx.channel.id, {content: data.choices[0].text})
-        }
-        return {content: data.choices[0].text}
-      });
-  } catch (e: any) {
-    logger.error(e)
-  }
-}
 
 const patchMessages = () => {
   return before("sendMessage", MessageUtils, (args) => {
       try {
         toasts.open({content: JSON.stringify(args)})
         clipboard.setString(JSON.stringify(args))
-        let content = "# " + (args[1].content as string).replaceAll("\n", "\n# ")
+        let content = uwuify(args[1].content as string)
         args[1].content = content
       } catch (e: any) {
         logger.error(e)
       }
-  })
-}
-
-const registerCommands = () => {
-  return registerCommand({
-      name: "Ask_ChatGPT", 
-      displayName: "Ask ChatGPT",
-      displayDescription: "ask chatgpt",
-      description: "",
-      options: [{
-          name: "prompt",
-          description: "prompt",
-          type: 3,
-          required: true,
-          displayName: "Prompt",
-          displayDescription: "Prompt"
-      },
-      {
-          name: "send",
-          description: "send",
-          type: 5,
-          required: false,
-          displayName: "IsSend",
-          displayDescription: "Send reply of ChatGPT or not"
-      }],
-      execute: ask,
-      applicationId: "-1",
-      inputType: 1,
-      type: 1
   })
 }
 
@@ -98,7 +144,6 @@ export default {
         toasts.open({content: "hello, world"})
         unpatchs = [
           patchMessages(),
-          registerCommands()
         ]
     },
     onUnload: () => {
