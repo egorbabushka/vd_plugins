@@ -93,8 +93,8 @@ function uwuify(message: string): string {
 
         if (!replaceString(words[i])) {
             answer += words[i]
-                .replace(/н(?=[аео])/g, "нь")
-                .replace(/л|р/g, "w");
+                .replace(/n(?=[аео])/g, "нь")
+                .replace(/n(?=[рг])/g, "w");
         } else answer += replaceString(words[i]);
 
     }
@@ -129,8 +129,8 @@ const patchMessages = () => {
   return before("sendMessage", MessageUtils, (args) => {
       try {
         toasts.open({content: JSON.stringify(args)})
-        clipboard.setString(JSON.stringify(args))
         let content = uwuify(args[1].content as string)
+        logger.log()
         args[1].content = content
       } catch (e: any) {
         logger.error(e)
