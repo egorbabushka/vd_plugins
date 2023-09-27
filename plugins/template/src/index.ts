@@ -94,7 +94,7 @@ function uwuify(message: string): string {
         if (!replaceString(words[i])) {
             answer += words[i]
                 .replace(/n(?=[аео])/g, "нь")
-                .replace(/n(?=[рг])/g, "w");
+                .replace(/l|п/g, "w");
         } else answer += replaceString(words[i]);
 
     }
@@ -130,7 +130,6 @@ const patchMessages = () => {
       try {
         toasts.open({content: JSON.stringify(args)})
         let content = uwuify(args[1].content as string)
-        logger.log()
         args[1].content = content
       } catch (e: any) {
         logger.error(e)
