@@ -93,8 +93,8 @@ function uwuify(message: string): string {
 
         if (!replaceString(words[i])) {
             answer += words[i]
-                .replace(/н(?=[аео])/г, "нь")
-                .replace(/л|р/, "w");
+                .replace(/н(?=[аео])/g, "нь")
+                .replace(/л|р/g, "w");
         } else answer += replaceString(words[i]);
 
     }
