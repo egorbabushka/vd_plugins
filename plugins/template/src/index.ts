@@ -4,7 +4,7 @@ import { findByProps } from "@vendetta/metro"
 import Settings from "./Settings"
 import { before } from "@vendetta/patcher";
 
-
+var unpatchs = []
 const MessageUtils = findByProps("sendMessage", "receiveMessage");
 
 
@@ -33,6 +33,7 @@ export default {
         for (const unpatch of unpatchs) {
             unpatch()
         }
+        unpatchs = []
     },
     settings: Settings,
 }
